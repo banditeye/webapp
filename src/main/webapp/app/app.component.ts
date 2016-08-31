@@ -1,24 +1,28 @@
-import {Component} from '@angular/core';
-import {Header} from './header/header';
-import {LoginService} from './login/login.service';
-import {ROUTER_DIRECTIVES, Router} from '@angular/router';
+import { Component } from '@angular/core';
+
+export class Hero {
+  id: number;
+  name: string;
+}
 
 @Component({
-    selector: 'hmac-app',
-    templateUrl:'./app/app.html',
-    providers: [LoginService],
-    directives: [ROUTER_DIRECTIVES,Header]
+  selector: 'my-app',
+  template: `
+    <h1>{{title}}</h1>
+    <h2>{{hero.name}} details!</h2>
+    <div><label>id: </label>{{hero.id}}</div>
+    <div>
+      <label>name: </label>
+      <input [(ngModel)]="hero.name" placeholder="name">
+    </div>
+    `
 })
 export class AppComponent {
-    constructor(router:Router,loginService:LoginService) {
-        router.events.subscribe(e => {
-            if(e.url !== '/authenticate') {
-                if(!loginService.isAuthenticated()) {
-                    router.navigate(['/authenticate']);
-                } else {
-                    loginService.sendLoginSuccess();
-                }
-            }
-        });
-    }
+  title = 'Tour of Heroes';
+  hero: Hero = {
+    id: 1,
+    name: 'Windstorm'
+  };
 }
+
+
